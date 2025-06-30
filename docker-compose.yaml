@@ -1,0 +1,28 @@
+version: '3.8'
+
+services:
+#  api:
+#    build: .
+#    image: jetauto
+#    container_name: jetauto
+#    ports:
+#      - "8082:8080"
+#    depends_on:
+#      db:
+#        condition: service_healthy
+#    restart: always
+#    env_file:
+#      - .env
+
+  db:
+    image: postgres:16
+    container_name: jetauto_db
+    restart: always
+    ports:
+      - "5435:5432"
+    env_file:
+      - .env
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER}"]
+      interval: 10s
+      retries: 5

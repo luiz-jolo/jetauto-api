@@ -1,4 +1,6 @@
 package br.com.jetauto.domain.automobile.dto;
 
-public record CreateAutomobileDto(String model, String make) {
+import br.com.jetauto.domain.automobile.CarBody;
+
+public record CreateAutomobileDto(String model, String brand, String description, CarBody carBody, Integer year, Integer kilometerAge) {
 }

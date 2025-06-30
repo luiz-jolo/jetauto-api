@@ -1,20 +1,18 @@
 package br.com.jetauto.controller;
 
 
-import br.com.jetauto.domain.automobile.dto.AutomobileCreatedDto;
+import br.com.jetauto.domain.automobile.Automobile;
+import br.com.jetauto.domain.automobile.dto.AutomobileDto;
 import br.com.jetauto.domain.automobile.dto.CreateAutomobileDto;
 import br.com.jetauto.domain.automobile.service.AutomobileService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.UUID;
+
 @RestController
 @RequestMapping("/automobile")
 public class AutomobileController {
-
-    @GetMapping
-    public ResponseEntity<String> ping(){
-        return ResponseEntity.ok("pong");
-    }
 
     private final AutomobileService automobileService;
 
@@ -22,8 +20,14 @@ public class AutomobileController {
         this.automobileService = automobileService;
     }
 
-    @PostMapping ResponseEntity<AutomobileCreatedDto> create(@RequestBody CreateAutomobileDto createAutomobileDto){
+    @PostMapping ResponseEntity<Automobile> create(@RequestBody CreateAutomobileDto createAutomobileDto){
         return ResponseEntity.ok(automobileService.create(createAutomobileDto));
     }
+
+    @GetMapping("/{id}")
+    ResponseEntity<AutomobileDto> automobileDetails(@PathVariable UUID id){
+        return ResponseEntity.ok(automobileService.automobileDetails(id));
+    }
+
 
 }
