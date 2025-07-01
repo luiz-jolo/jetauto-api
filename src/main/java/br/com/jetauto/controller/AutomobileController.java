@@ -5,6 +5,7 @@ import br.com.jetauto.domain.automobile.Automobile;
 import br.com.jetauto.domain.automobile.dto.AutomobileDto;
 import br.com.jetauto.domain.automobile.dto.CreateAutomobileDto;
 import br.com.jetauto.domain.automobile.service.AutomobileService;
+import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -20,7 +21,7 @@ public class AutomobileController {
         this.automobileService = automobileService;
     }
 
-    @PostMapping ResponseEntity<Automobile> create(@RequestBody CreateAutomobileDto createAutomobileDto){
+    @PostMapping ResponseEntity<Automobile> create(@RequestBody @Valid CreateAutomobileDto createAutomobileDto){
         return ResponseEntity.ok(automobileService.create(createAutomobileDto));
     }
 
