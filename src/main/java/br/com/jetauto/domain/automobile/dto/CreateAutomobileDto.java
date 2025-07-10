@@ -19,7 +19,6 @@ public record CreateAutomobileDto(
         CarBody carBody,
 
         @NotNull(message = "Year is mandatory")
-        @Min(value = 1900, message = "Year must be above of 1900")
         Integer year,
 
         @NotNull(message = "Kilometer age is mandatory")
