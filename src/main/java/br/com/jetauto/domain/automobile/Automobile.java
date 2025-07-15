@@ -1,8 +1,11 @@
 package br.com.jetauto.domain.automobile;
 
 import jakarta.persistence.*;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 
 import java.time.LocalDateTime;
+import java.util.Set;
 import java.util.UUID;
 
 @Entity
@@ -35,10 +38,14 @@ public class Automobile {
     @Column(nullable = false)
     private LocalDateTime createdAt;
 
+    @OneToMany(mappedBy = "automobile", fetch = FetchType.LAZY)
+    @Fetch(FetchMode.SUBSELECT)
+    private Set<AutomobileImage> automobileImages;
 
-    public Automobile(){}
+    public Automobile() {
+    }
 
-    public Automobile(String model, String brand , String description, CarBody carBody, Integer year, Integer kilometerAge){
+    public Automobile(String model, String brand, String description, CarBody carBody, Integer year, Integer kilometerAge) {
         this.model = model;
         this.brand = brand;
         this.description = description;
@@ -102,5 +109,13 @@ public class Automobile {
 
     public void setKilometerAge(Integer kilometerAge) {
         this.kilometerAge = kilometerAge;
+    }
+
+    public Set<AutomobileImage> getAutomobileImages() {
+        return automobileImages;
+    }
+
+    public void setAutomobileImages(Set<AutomobileImage> automobileImages) {
+        this.automobileImages = automobileImages;
     }
 }

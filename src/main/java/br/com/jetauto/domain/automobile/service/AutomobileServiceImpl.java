@@ -4,6 +4,7 @@ import br.com.jetauto.domain.automobile.Automobile;
 import br.com.jetauto.domain.automobile.AutomobileImage;
 import br.com.jetauto.domain.automobile.AutomobileImageRepository;
 import br.com.jetauto.domain.automobile.AutomobileRepository;
+import br.com.jetauto.domain.automobile.dto.AutomobileDetailsDto;
 import br.com.jetauto.domain.automobile.dto.AutomobileDto;
 import br.com.jetauto.domain.automobile.dto.CreateAutomobileDto;
 import br.com.jetauto.domain.automobile.dto.validators.CreationValidator;
@@ -69,21 +70,18 @@ public class AutomobileServiceImpl implements AutomobileService {
 
         for (MultipartFile image : images){
             try{
-                // Nome único
-                String uniqueFilename = UUID.randomUUID() + "_" + image.getOriginalFilename();
+                String originalFilename = image.getOriginalFilename();
+                String extension = originalFilename.substring(originalFilename.lastIndexOf('.') + 1);
+                String uniqueFilename = UUID.randomUUID().toString() + "." + extension;
 
-                // Caminho completo
                 Path filePath = Paths.get(uploadDir, uniqueFilename);
 
-                // Salva a imagem no sistema de arquivos
                 Files.write(filePath, image.getBytes());
 
-                // Salva o path da imagem no banco
                 AutomobileImage automobileImage = new AutomobileImage();
                 automobileImage.setFilePath(filePath.toString());
                 automobileImage.setAutomobile(automobile);
                 automobileImageRepository.save(automobileImage);
-
 
             }catch (IOException exception){
                 throw new RuntimeException("Erro ao salvar imagem", exception);
@@ -93,15 +91,22 @@ public class AutomobileServiceImpl implements AutomobileService {
     }
 
     @Override
-    public AutomobileDto automobileDetails(UUID id) {
+    public AutomobileDetailsDto automobileDetails(UUID id) {
         Automobile automobile = automobileRepository.getReferenceById(id);
-        return new AutomobileDto(
+
+        List<String> automobileImages = automobile.getAutomobileImages()
+                .stream()
+                .map(AutomobileImage::getFilePath)
+                .toList();
+
+        return new AutomobileDetailsDto(
                 automobile.getId(),
                 automobile.getModel(),
                 automobile.getBrand(),
                 automobile.getDescription(),
                 automobile.getCarBody(),
                 automobile.getYear(),
-                automobile.getKilometerAge());
+                automobile.getKilometerAge(),
+                automobileImages);
     }
 }

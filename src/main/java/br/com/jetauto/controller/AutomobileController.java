@@ -2,6 +2,7 @@ package br.com.jetauto.controller;
 
 
 import br.com.jetauto.domain.automobile.Automobile;
+import br.com.jetauto.domain.automobile.dto.AutomobileDetailsDto;
 import br.com.jetauto.domain.automobile.dto.AutomobileDto;
 import br.com.jetauto.domain.automobile.dto.CreateAutomobileDto;
 import br.com.jetauto.domain.automobile.service.AutomobileService;
@@ -36,10 +37,8 @@ public class AutomobileController {
         return ResponseEntity.ok(automobileService.createWithImages(createAutomobileDto, images));
     }
 
-
-
     @GetMapping("/{id}")
-    public ResponseEntity<AutomobileDto> automobileDetails(@PathVariable UUID id){
+    public ResponseEntity<AutomobileDetailsDto> automobileDetails(@PathVariable UUID id){
         return ResponseEntity.ok(automobileService.automobileDetails(id));
     }
 
